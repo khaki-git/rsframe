@@ -91,7 +91,11 @@ impl Frame {
         let frame = Frame::from_img(path.clone());
 
         if Path::new(&path).exists() {
-            fs::remove_file(path).expect("Could not remove temporary image file.");
+            let result = fs::remove_file(path);
+            match result {
+                Ok(_) => println!("Successfully remove text image file."),
+                Err(_) => println!("Could not remove text image file.")
+            }
         }
 
         frame.unwrap()
