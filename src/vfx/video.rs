@@ -90,6 +90,12 @@ impl Frame {
 
         let frame = Frame::from_img(path.clone());
 
+        let rm_results = fs::remove_file(path);
+        match rm_results {
+            Ok(_) => {},
+            Err(_) => eprintln!("Could not delete text image.")
+        }
+
         Ok(frame?)
     }
 
