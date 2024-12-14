@@ -90,15 +90,7 @@ impl Frame {
 
         let frame = Frame::from_img(path.clone());
 
-        if Path::new(&path).exists() {
-            let result = fs::remove_file(path);
-            match result {
-                Ok(_) => println!("Successfully remove text image file."),
-                Err(_) => println!("Could not remove text image file.")
-            }
-        }
-
-        frame
+        Ok(frame?)
     }
 
     /// Returns a Frame that is an identical copy of the image provided.
