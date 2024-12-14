@@ -89,7 +89,10 @@ impl Frame {
         let path = create_text(text, font, color, width, height);
 
         let frame = Frame::from_img(path.clone());
-        fs::remove_file(path).expect("Could not remove temporary image file.");
+
+        if Path::new(&path).exists() {
+            fs::remove_file(path).expect("Could not remove temporary image file.");
+        }
 
         frame.unwrap()
     }
