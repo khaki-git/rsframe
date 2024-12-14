@@ -1,5 +1,5 @@
 use crate::vfx::{compile::build_folder, tmp::{drop_folder, create_tmp_folder}, text::create_text};
-use image::{GenericImage, GenericImageView, Rgb, RgbImage};
+use image::{Rgb, RgbImage};
 use std::process::Command;
 use rayon::prelude::*;
 use std::fs;
@@ -182,7 +182,7 @@ impl Frame {
     /// * `target_color` - The colour to tint the image with.
     /// * `strength` - The strength of the tinting effect, between 0 and 1.
     pub fn tint(&mut self, target_color: Pixel, strength: f32) {
-        for mut pixel in &mut self.pixels {
+        for pixel in &mut self.pixels {
             pixel.r = lerp(strength, pixel.r as f32, target_color.r as f32) as u8;
             pixel.g = lerp(strength, pixel.g as f32, target_color.g as f32) as u8;
             pixel.b = lerp(strength, pixel.b as f32, target_color.b as f32) as u8;
@@ -191,7 +191,7 @@ impl Frame {
 
     /// Turns the frame monochrome and removes all colour.
     pub fn monochrome(&mut self) {
-        for mut pixel in &mut self.pixels {
+        for pixel in &mut self.pixels {
             let avg = ((pixel.r as usize + pixel.g as usize + pixel.b as usize) / 3) as u8;
 
             pixel.r = avg;
@@ -404,7 +404,7 @@ impl Video {
 
     /// Makes all the frames monochrome.
     pub fn monochrome(&mut self) {
-        for mut frame in &mut self.frames {
+        for frame in &mut self.frames {
             frame.monochrome();
         }
     }

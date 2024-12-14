@@ -20,5 +20,5 @@ pub fn create_tmp_folder() -> String {
 }
 
 pub fn drop_folder(folder: String) {
-    fs::remove_dir_all(folder);
+    fs::remove_dir_all(folder).expect("Could not drop folder.");
 }

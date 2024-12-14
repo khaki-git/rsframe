@@ -2,6 +2,12 @@
 name = "rsframe"
 version = "0.1.0"
 edition = "2021"
+description = "An easy video editing library written in Rust."
+license = "GPL-3"
+readme = "README.md"
+repository = "https://github.com/khaki-git/rsframe"
+homepage = "https://github.com/khaki-git/rsframe"
+
 
 [dependencies]
 image = "0.25.5"
