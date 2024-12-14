@@ -1,5 +1,7 @@
 # rsframe
 
+***IT IS HIGHLY RECOMMENDED THAT YOU READ THROUGH THE [GUIDE](GUIDE.md) BEFORE YOU START USING rsframe***
+
 `rsframe` is a Rust library for video frame manipulation. It provides functionalities to tint frames, splice videos, concatenate videos, save videos, and retrieve specific frames. This library is designed to be efficient and easy to use, leveraging parallel processing where possible.
 
 ## Features
