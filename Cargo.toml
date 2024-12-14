@@ -1,6 +1,6 @@
 [package]
 name = "rsframe"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 description = "An easy video editing library written in Rust."
 license = "MIT"
