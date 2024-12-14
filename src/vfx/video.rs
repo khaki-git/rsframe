@@ -89,6 +89,7 @@ impl Frame {
         let path = create_text(text, font, color, width, height);
 
         let frame = Frame::from_img(path.clone());
+        let unwrapped = frame.unwrap();
 
         if Path::new(&path).exists() {
             let result = fs::remove_file(path);
@@ -98,7 +99,7 @@ impl Frame {
             }
         }
 
-        frame.unwrap()
+        unwrapped
     }
 
     /// Returns a Frame that is an identical copy of the image provided.
