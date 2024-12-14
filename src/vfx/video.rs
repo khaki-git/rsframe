@@ -85,11 +85,10 @@ impl Frame {
     /// # Returns
     /// 
     /// A new `Frame` instance containing the rendered text.
-    pub fn text(width: usize, height: usize, font: String, color: String, text: String) -> Frame {
+    pub fn text(width: usize, height: usize, font: String, color: String, text: String) -> Result<Frame, String> {
         let path = create_text(text, font, color, width, height);
 
         let frame = Frame::from_img(path.clone());
-        let unwrapped = frame.unwrap();
 
         if Path::new(&path).exists() {
             let result = fs::remove_file(path);
@@ -99,7 +98,7 @@ impl Frame {
             }
         }
 
-        unwrapped
+        frame
     }
 
     /// Returns a Frame that is an identical copy of the image provided.
