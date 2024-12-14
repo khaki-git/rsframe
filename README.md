@@ -17,4 +17,4 @@ You can add `rsframe` to your project by executing the command
 ```shell
 cargo add rsframe
 ```
-or by adding `rsframe = "0.1.2"` to your `Cargo.toml` file.
+or by adding `rsframe = "0.1.3"` to your `Cargo.toml` file.
