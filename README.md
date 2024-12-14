@@ -13,4 +13,8 @@
 ## Usage
 
 ### Cargo
-`rsframe` has not been published to crates.io yet. You will have to wait for the crate to be finished before being published.
+You can add `rsframe` to your project by executing the command
+```shell
+cargo add rsframe
+```
+or by adding `rsframe = "0.1.0"` to your `Cargo.toml` file.
