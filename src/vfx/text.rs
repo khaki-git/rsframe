@@ -1,9 +1,11 @@
+use std::os::windows::process::CommandExt;
 use std::process::Command;
 use crate::vfx::tmp::rng_string;
 
-pub fn create_text(text: String, font: String, color: String, width: usize, height: usize) -> String {
+pub fn create_text(text: String, font: String, color: String, width: usize, height: usize, magick: &str) -> String {
     let img_name = format!("{}.bmp", rng_string(32));
-    let output = Command::new("magick")
+    let output = Command::new(magick)
+        .creation_flags(0x08000000)
         .args(&[
             "-background",
             "transparent",

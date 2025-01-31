@@ -1,7 +1,8 @@
+use std::os::windows::process::CommandExt;
 use std::process::Command;
 use std::path::Path;
 
-pub fn build_folder(folder_path: String, framerate: i32, location: String) -> Result<(), ()> {
+pub fn build_folder(folder_path: String, framerate: i32, location: String, ffmpeg: &str) -> Result<(), ()> {
     // Ensure the input images exist
     let folder_path = Path::new(&folder_path);
 
@@ -27,7 +28,8 @@ pub fn build_folder(folder_path: String, framerate: i32, location: String) -> Re
     let input_pattern = folder_path.join("image%d.bmp").to_string_lossy().to_string();
 
     // Execute FFmpeg command to convert images to video
-    let output = Command::new("ffmpeg")
+    let output = Command::new(ffmpeg)
+        .creation_flags(0x08000000)
         .args(&[
             "-framerate", &framerate.to_string(),
             "-i", &input_pattern,

@@ -3,6 +3,7 @@ use image::{Rgb, RgbImage};
 use std::process::Command;
 use rayon::prelude::*;
 use std::fs;
+use std::io::Write;
 use std::path::Path;
 
 /// A single pixel, typically used for representing a colour.
@@ -12,6 +13,42 @@ pub struct Pixel {
     pub r: u8, // Red component of the pixel
     pub g: u8, // Green component of the pixel
     pub b: u8, // Blue component of the pixel
+}
+
+impl Pixel {
+    /// Creates a new pixel with the colours.
+    pub fn new(r: u8, g: u8, b: u8) -> Pixel {
+        Pixel {
+            r,
+            g,
+            b
+        }
+    }
+
+    /// Creates a black pixel
+    pub fn black() -> Pixel {
+        Pixel::new(0, 0, 0)
+    }
+
+    /// Creates a white pixel
+    pub fn white() -> Pixel {
+        Pixel::new(255, 255, 255)
+    }
+
+    /// Creates a red pixel
+    pub fn red() -> Pixel {
+        Pixel::new(255, 0, 0)
+    }
+
+    /// Creates a green pixel
+    pub fn green() -> Pixel {
+        Pixel::new(0, 255, 0)
+    }
+
+    /// Creates a blue pixel
+    pub fn blue() -> Pixel {
+        Pixel::new(0, 0, 255)
+    }
 }
 
 /// The VideoPosition enum is used for determining where to put a transition effect in the video.
@@ -85,8 +122,8 @@ impl Frame {
     /// # Returns
     /// 
     /// A new `Frame` instance containing the rendered text.
-    pub fn text(width: usize, height: usize, font: String, color: String, text: String) -> Result<Frame, String> {
-        let path = create_text(text, font, color, width, height);
+    pub fn text(width: usize, height: usize, font: String, color: String, text: String, magick: &str) -> Result<Frame, String> {
+        let path = create_text(text, font, color, width, height, magick);
 
         let frame = Frame::from_img(path.clone());
 
@@ -278,8 +315,8 @@ impl Frame {
 /// # Returns
 /// 
 /// A `Result` indicating success or failure of the operation.
-pub fn combine_video_and_audio(input_video: &str, input_audio: &str, output_path: &str) -> Result<(), String> {
-    let output = Command::new("ffmpeg")
+pub fn combine_video_and_audio(input_video: &str, input_audio: &str, output_path: &str, ffmpeg: &str) -> Result<(), String> {
+    let output = Command::new(ffmpeg)
         .arg("-i")
         .arg(input_video)
         .arg("-i")
@@ -338,10 +375,10 @@ impl Video {
     /// # Returns
     /// 
     /// A `Result` containing the new `Video` or an error message.
-    pub fn from_file(filename: String) -> Result<Video, String> {
+    pub fn from_file(filename: String, ffmpeg: &str) -> Result<Video, String> {
         let temp = create_tmp_folder();
 
-        let output = Command::new("ffmpeg")
+        let output = Command::new(ffmpeg)
             .arg("-i")
             .arg(filename.as_str())
             .arg(format!("{}/image%d.png", temp))
@@ -557,7 +594,7 @@ impl Video {
     /// 
     /// * `export_location` - The path where the video will be saved.
     /// * `fps` - The frames per second for the output video.
-    pub fn save(&self, export_location: String, fps: u8, keep_folder: bool) {
+    pub fn save(&self, export_location: String, fps: u8, keep_folder: bool, ffmpeg: &str) {
         let temporary = create_tmp_folder();
 
         let progress_bar = indicatif::ProgressBar::new(self.frames.len() as u64);
@@ -581,7 +618,7 @@ impl Video {
 
         progress_bar.finish();
         println!("Starting build!");
-        let results = build_folder(temporary.clone(), fps as i32, export_location);
+        let results = build_folder(temporary.clone(), fps as i32, export_location, ffmpeg);
 
         match results {
             Ok(_) => {
